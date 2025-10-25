@@ -35,7 +35,7 @@ def save_json(obj, out_path):
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:
         json.dump(obj, f, indent=2)
-    print(f"💾 Saved {out_path}")
+    print(f"Saved {out_path}")
 
 def save_metrics(metrics: dict, out_path):
     """Save metrics (bert_metrics.json, comparison.json, etc.)"""
@@ -43,7 +43,7 @@ def save_metrics(metrics: dict, out_path):
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:
         json.dump(metrics, f, indent=2)
-    print(f"✅ Saved {out_path}")
+    print(f"Saved {out_path}")
 
 def load_or_run_lstm():
     path = Path("results/lstm_metrics.json")
@@ -63,29 +63,42 @@ def main():
     # data
     train_loader, val_loader, test_loader = load_and_preprocess_data()
 
-    # model
-    model = load_bert_model(num_labels=2).to(device)
+    bert_dir = Path(CONFIG["save_dir"]) / "bert_imdb"
+    model_file = bert_dir / "pytorch_model.bin"
+    tokenizer_dir = bert_dir
 
-    # train
-    model = train_bert(
-        model,
-        train_loader=train_loader,
-        val_loader=val_loader,
-        device=device,
-        epochs=CONFIG["epochs"],
-        lr=CONFIG["bert_lr"],
-    )
+    if model_file.exists():
+        print(f"Found existing fine-tuned BERT model at {bert_dir}, skipping training.")
+        model = load_bert_model(num_labels=2).to(device)
+        tokenizer = BertTokenizer.from_pretrained(str(tokenizer_dir))
+        model.load_state_dict(torch.load(model_file, map_location=device))
+
+    else:
+
+        # model
+        model = load_bert_model(num_labels=2).to(device)
+
+        # train
+        model = train_bert(
+            model,
+            train_loader=train_loader,
+            val_loader=val_loader,
+            device=device,
+            epochs=CONFIG["epochs"],
+            lr=CONFIG["bert_lr"],
+        )
+        
+        # save
+        out_dir = Path(CONFIG["save_dir"]) / "bert_imdb"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        print("Saving to:", out_dir)
+        model.save_pretrained(out_dir)
+        BertTokenizer.from_pretrained(CONFIG["bert_model_name"]).save_pretrained(out_dir)
+
 
     # evaluate
     test_bert(model, test_loader, device)
-
-    # save
-    out_dir = Path(CONFIG["save_dir"]) / "bert_imdb"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    print("Saving to:", out_dir)
-    model.save_pretrained(out_dir)
-    BertTokenizer.from_pretrained(CONFIG["bert_model_name"]).save_pretrained(out_dir)
-
+    
     bert_metrics = {
         "model": "BERT (bert-base-uncased)",
         "epochs": CONFIG["epochs"],
