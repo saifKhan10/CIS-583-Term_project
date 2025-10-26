@@ -48,7 +48,7 @@ def save_metrics(metrics: dict, out_path):
 def load_or_run_lstm():
     path = Path("results/lstm_metrics.json")
     if not path.exists():
-        print("⚠ Could not find results/lstm_metrics.json after ensure_lstm_metrics()")
+        print("Could not find results/lstm_metrics.json after ensure_lstm_metrics()")
         return None
     with open(path, "r") as f:
         return json.load(f)
@@ -98,7 +98,7 @@ def main():
 
     # evaluate
     test_bert(model, test_loader, device)
-    
+
     bert_metrics = {
         "model": "BERT (bert-base-uncased)",
         "epochs": CONFIG["epochs"],
@@ -106,7 +106,6 @@ def main():
         "max_len": CONFIG["max_len"],
         "learning_rate": CONFIG["bert_lr"],
         # Accuracy / F1 are printed by test_bert() but not returned.
-        # If you later modify test_bert to return them, we can add them here.
     }
     save_json(bert_metrics, "results/bert_metrics.json")
 
@@ -123,8 +122,6 @@ def main():
         lstm_test_f1 = lstm_metrics.get("test_f1", "n/a")
 
         # BERT: since test_bert only prints, we don't have the exact numbers here
-        # unless you modify test_bert to return them.
-        # We'll leave placeholders for now.
         bert_val_acc = "see console"
         bert_test_acc = "see console"
         bert_test_f1 = "see console"
@@ -134,7 +131,6 @@ def main():
         print(f"{'Test F1':<18} {lstm_test_f1:<12} {bert_test_f1:<12}")
         print("======================================================\n")
 
-        # 10. Save comparison.json for report/slides
         comparison = {
             "lstm": {
                 "val_acc_last_epoch": lstm_val_acc,
@@ -154,7 +150,14 @@ def main():
         }
         save_json(comparison, "results/comparison.json")
     else:
-        print("⚠ Skipping comparison output because LSTM metrics could not be loaded.")
+        print("Skipping comparison output because LSTM metrics could not be loaded.")
+
+    print("\n=== Running full evaluation (confusion matrices + plots) ===")
+    try:
+        from src.evaluate import main as evaluate_main
+        evaluate_main()
+    except Exception as e:
+        print(f"Evaluation step failed: {e}")
 
 if __name__ == "__main__":
     main()

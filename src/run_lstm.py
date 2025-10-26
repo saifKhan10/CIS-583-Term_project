@@ -1,3 +1,4 @@
+from xml.parsers.expat import model
 import torch
 from pathlib import Path
 import json
@@ -59,6 +60,11 @@ def run_lstm():
     print(f"Val Acc:  {val_acc:.4f}")
     print(f"Test Acc: {test_acc:.4f}")
     print(f"Test F1:  {test_f1:.4f}")
+    
+    lstm_model_path = Path(CONFIG["lstm_model_file"])
+    lstm_model_path.parent.mkdir(parents=True, exist_ok=True)
+    torch.save(model.state_dict(), lstm_model_path)
+    print(f"Saved LSTM model weights to {lstm_model_path}")
 
     # save metrics for report/README
     save_metrics({
@@ -74,6 +80,8 @@ def run_lstm():
         "test_acc": test_acc,
         "test_f1": test_f1,
     })
+
+    
 
 
 if __name__ == "__main__":
