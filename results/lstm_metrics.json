@@ -1,0 +1,14 @@
+{
+  "model": "LSTMClassifier",
+  "epochs": 3,
+  "batch_size": 16,
+  "max_len": 256,
+  "learning_rate": 0.001,
+  "embedding_dim": 100,
+  "hidden_dim": 256,
+  "dropout": 0.3,
+  "val_acc_last_epoch": 0.5144,
+  "test_acc": 0.51432,
+  "test_f1": 0.23336279833312287,
+  "timestamp": "2025-10-25T20:11:09"
+}
