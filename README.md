@@ -11,11 +11,9 @@ sentiment_analysis/
 │   ├── bert_model.py            # Transformer/BERT implementation  
 │   ├── train.py                 # Training loop for both models  
 │   ├── evaluate.py              # Metrics, confusion matrix, plots  
-│   ├── utils.py                 # Logging, visualization, helper functions  
-│  
-│── notebooks/                   # Jupyter notebooks for experimentation  
+│   ├── main.py                      # Entry point — orchestrates the pipeline  
+│   
 │── results/                     # Store logs, graphs, trained models  
 │── reports/                     # IEEE report, drafts, figures  
 │── requirements.txt             # Dependencies  
-│── main.py                      # Entry point — orchestrates the pipeline  
 │── README.md                    # Project overview  
