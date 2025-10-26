@@ -1,0 +1,35 @@
+# === Python build junk ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.tmp
+
+# === Environment folders ===
+.venv/
+env/
+venv/
+
+# === Notebook checkpoints ===
+.ipynb_checkpoints/
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+
+# === Results and large model weights ===
+results/*.pt
+results/**/*.pt
+results/**/*.bin
+results/**/*.safetensors
+
+# Keep only small config/tokenizer files from BERT
+results/bert_imdb/*
+!results/bert_imdb/config.json
+!results/bert_imdb/tokenizer_config.json
+!results/bert_imdb/vocab.txt
+
+# === Dataset cache ===
+data/raw/
+data/processed/

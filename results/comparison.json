@@ -1,0 +1,17 @@
+{
+  "lstm": {
+    "val_acc_last_epoch": 0.5144,
+    "test_acc": 0.51432,
+    "test_f1": 0.23336279833312287,
+    "embedding_dim": 100,
+    "hidden_dim": 256,
+    "epochs": 3
+  },
+  "bert": {
+    "epochs": 3,
+    "batch_size": 16,
+    "max_len": 256,
+    "lr": 2e-05,
+    "note": "BERT test acc/f1 printed in console by test_bert()"
+  }
+}
