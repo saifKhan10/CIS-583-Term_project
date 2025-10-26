@@ -22,7 +22,7 @@ CONFIG = {
 
     # LSTM model settings (for later enhancement)
     "lstm": {
-        "embedding_dim": 100,
+        "embedding_dim": 200,
         "hidden_dim": 256,
         "dropout": 0.3,
         "lr": 1e-3

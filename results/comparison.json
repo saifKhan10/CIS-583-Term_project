@@ -1,9 +1,9 @@
 {
   "lstm": {
-    "val_acc_last_epoch": 0.5144,
-    "test_acc": 0.51432,
-    "test_f1": 0.23336279833312287,
-    "embedding_dim": 100,
+    "val_acc_last_epoch": 0.81,
+    "test_acc": 0.8046,
+    "test_f1": 0.7931924982007535,
+    "embedding_dim": 200,
     "hidden_dim": 256,
     "epochs": 3
   },
